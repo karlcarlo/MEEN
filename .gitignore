@@ -29,6 +29,17 @@ nbactions.xml
 nb-configuration.xml
 
 # --------------------
+# Git Files
+# --------------------
+*.orig
+
+# --------------------
+# Express Files
+# --------------------
+*.log
+logs/
+
+# --------------------
 # Node Files
 # --------------------
 .nodemonignore
