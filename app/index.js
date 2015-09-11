@@ -7,16 +7,20 @@ var bodyParser = require('body-parser');
 
 var _ = require('lodash');
 var hbs = require('hbs');
+var helmet = require('helmet');
 
 var config = require('../config');
+var helpers = require('./helpers');
 
 var app = express();
 
 // Global values
 _.extend(app.locals, {
-  version     : config.version,
-  title       : config.app.title,
-  messages    : []
+  version: config.version,
+  title: config.app.title,
+  description: config.app.description,
+  keywords: config.app.keywords,
+  messages: []
 });
 
 // handlebars
@@ -43,14 +47,28 @@ app.use(cookieParser());
 app.use(require('node-compass')({ mode: 'expanded' }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// routers and controllers
-require('./controllers')(app);
+// Use helmet to secure Express headers
+app.use(helmet.xframe());
+app.use(helmet.xssFilter());
+app.use(helmet.nosniff());
+app.use(helmet.ienoopen());
+app.disable('x-powered-by');
+
+// Globbing model files
+helpers.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
+  require(path.resolve(modelPath));
+});
+
+// Globbing routing files
+helpers.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
+  require(path.resolve(routePath))(app);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  res.render('errors/400.hbs', {
+  res.render('errors/404.hbs', {
     message: err.message
   });
 });

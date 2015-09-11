@@ -7,5 +7,5 @@ var helpers = require('../helpers');
 
 
 exports.index = function(req, res, next) {
-  res.render('users/index', { title: 'users home' });
+  res.render('articles/index', { title: 'article home' });
 };

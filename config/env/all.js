@@ -11,9 +11,17 @@ module.exports = {
   version: package_json.version,
   root: rootPath,
   port: process.env.PORT || 3000,
-  db: process.env.MONGOHQ_URL,
+  db: {
+    uri: 'mongodb://localhost/mean',
+    options: {
+      user: '',
+      pass: ''
+    }
+  },
   app: {
     name: package_json.name,
-    title: 'MEEN'
+    title: 'MEEN',
+    description: '',
+    keywords: ''
   }
 };

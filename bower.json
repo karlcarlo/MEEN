@@ -1,0 +1,11 @@
+{
+  "name": "meen",
+  "version": "0.0.1",
+  "dependencies": {
+    "ember": "~1.12.0",
+    "ember-data-shim": "~0.0.14",
+    "bootstrap-sass": "~3.3.4",
+    "font-awesome": "~4.3.0"
+  },
+  "devDependencies": {}
+}

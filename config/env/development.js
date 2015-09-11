@@ -1,8 +1,14 @@
 'use strict';
 
 module.exports = {
-    db: "mongodb://localhost/meen-dev",
-    app: {
-        name: "MEEN - A Modern Stack - Development"
+  db: {
+    uri: 'mongodb://localhost/mean-dev',
+    options: {
+      user: '',
+      pass: ''
     }
+  },
+  app: {
+      name: "MEEN - A Modern Stack - Development"
+  }
 }

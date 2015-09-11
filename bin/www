@@ -13,6 +13,8 @@ var app = require('../app');
 var debug = require('debug')('yougou_sass:server');
 var http = require('http');
 
+var chalk = require('chalk');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -33,6 +35,17 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+// Logging initialization
+console.log('--');
+console.log(chalk.green(config.app.title + ' application started'));
+console.log(chalk.green('Environment:\t\t\t' + process.env.NODE_ENV));
+console.log(chalk.green('Port:\t\t\t\t' + config.port));
+console.log(chalk.green('Database:\t\t\t' + config.db.uri));
+if (process.env.NODE_ENV === 'secure') {
+  console.log(chalk.green('HTTPs:\t\t\t\ton'));
+}
+console.log('--');
 
 /**
  * Normalize a port into a number, string, or false.
