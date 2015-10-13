@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                 tasks: ['emberTemplates']
             },
             compass: {
-                files: ['public/styles/{,*/}*.{scss,sass}'],
+                files: ['public/stylesheets/{,*/}*.{scss,sass}'],
                 tasks: ['compass:server']
             },
             livereload: {
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
                 files: [
                     'public/.tmp/scripts/*.js',
                     'public/*.html',
-                    '{.tmp,public}/styles/{,*/}*.css',
+                    '{.tmp,public}/stylesheets/{,*/}*.css',
                     'public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
@@ -117,16 +117,16 @@ module.exports = function(grunt) {
         },
         compass: {
             options: {
-                sassDir: 'public/styles',
-                cssDir: 'public/.tmp/styles',
+                sassDir: 'public/stylesheets',
+                cssDir: 'public/.tmp/stylesheets',
                 generatedImagesDir: 'public/.tmp/images/generated',
                 imagesDir: 'public/images',
                 javascriptsDir: 'public/scripts',
-                fontsDir: 'public/styles/fonts',
+                fontsDir: 'public/stylesheets/fonts',
                 importPath: 'public/lib',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
+                httpFontsPath: '/stylesheets/fonts',
                 relativeAssets: false
             },
             dist: {},
@@ -141,9 +141,9 @@ module.exports = function(grunt) {
                 files: {
                     src: [
                         'dist/scripts/{,*/}*.js',
-                        'dist/styles/{,*/}*.css',
+                        'dist/stylesheets/{,*/}*.css',
                         'dist/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
-                        'dist/styles/fonts/*'
+                        'dist/stylesheets/fonts/*'
                     ]
                 }
             }
@@ -156,7 +156,7 @@ module.exports = function(grunt) {
         },
         usemin: {
             html: ['dist/{,*/}*.html'],
-            css: ['dist/styles/{,*/}*.css'],
+            css: ['dist/stylesheets/{,*/}*.css'],
             options: {
                 dirs: ['dist']
             }
@@ -185,8 +185,8 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     'dist/styles/main.css': [
-                        '.tmp/styles/{,*/}*.css',
-                        'public/styles/{,*/}*.css'
+                        '.tmp/stylesheets/{,*/}*.css',
+                        'public/stylesheets/{,*/}*.css'
                     ]
                 }
             }
@@ -223,7 +223,7 @@ module.exports = function(grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/*'
+                        'stylesheets/fonts/*'
                     ]
                 }]
             }
