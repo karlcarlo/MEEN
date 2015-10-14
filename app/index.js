@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var _ = require('lodash');
 var hbs = require('hbs');
 var helmet = require('helmet');
+var sass = require('node-sass-middleware');
 
 var config = require('../config');
 var helpers = require('./helpers');
@@ -44,7 +45,14 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('node-compass')({ mode: 'expanded' }));
+app.use(sass({
+  /* Options */
+  src: path.join(__dirname, '../public'),
+  dest: path.join(__dirname, '../public'),
+  debug: false,
+  outputStyle: 'nested', // nested, expanded, compact, compressed
+  prefix:  ''  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+}));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Use helmet to secure Express headers
@@ -68,6 +76,7 @@ helpers.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
+  res.status(err.status);
   res.render('errors/404.hbs', {
     message: err.message
   });

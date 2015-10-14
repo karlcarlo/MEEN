@@ -1,6 +1,6 @@
 {
-  "name": "yougou_sass",
-  "version": "0.0.0",
+  "name": "MEEN",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -13,12 +13,18 @@
     "debug": "~2.1.1",
     "express": "~4.12.2",
     "glob": "^5.0.6",
+    "grunt": "^0.4.2",
     "hbs": "~2.9.0",
     "helmet": "^0.9.0",
     "lodash": "^3.8.0",
-    "mongoose": "^4.0.3",
+    "mongoose": "^4.1.10",
     "morgan": "~1.5.1",
-    "node-compass": "0.2.4",
+    "node-sass-middleware": "^0.9.6",
     "serve-favicon": "~2.2.0"
+  },
+  "devDependencies": {
+    "connect-livereload": "^0.5.3",
+    "jshint-stylish": "^2.0.1",
+    "load-grunt-tasks": "^3.3.0"
   }
 }

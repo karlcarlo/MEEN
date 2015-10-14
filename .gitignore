@@ -50,12 +50,14 @@ node_modules/
 # SASS Files
 # --------------------
 .sass-cache/
+public/stylesheets/**/*.css
 
 # --------------------
 # Bower Files
 # --------------------
 .bower-*/
 bower_components
+public/lib/
 
 # --------------------
 # App Files

@@ -1,10 +1,7 @@
-@import "compass/css3";
-
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
+@import "variables";
+@import "../lib/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../lib/font-awesome/scss/font-awesome";
+/* Put your CSS here */
+html, body {
+  margin: 30px 0;
 }

@@ -12,7 +12,7 @@ module.exports = {
   root: rootPath,
   port: process.env.PORT || 3000,
   db: {
-    uri: 'mongodb://localhost/mean',
+    uri: 'mongodb://localhost/meen',
     options: {
       user: '',
       pass: ''
