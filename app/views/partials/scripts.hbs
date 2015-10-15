@@ -2,15 +2,14 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/lib/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
-<script src="/lib/handlebars/handlebars.runtime.js"></script>
 <script src="/lib/ember/ember.debug.js"></script>
-<script src="/lib/ember-data-shim/ember-data.js"></script>
+<script src="/lib/ember-data/ember-data.js"></script>
 
 <!-- ember application -->
 <script src="/dist/scripts/compiled-templates.js"></script>
 <script src="/dist/scripts/combined-scripts.js"></script>
 
 {{#if isDevelopment}}
-    <!-- Livereload script rendered -->
-    <script src="http://{{hostname}}:35729/livereload.js"></script>
+<!-- Livereload script rendered -->
+<script src="http://{{hostname}}:35729/livereload.js"></script>
 {{/if}}

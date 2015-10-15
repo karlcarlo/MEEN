@@ -7,5 +7,5 @@ var helpers = require('../helpers');
 
 
 exports.index = function(req, res, next) {
-  res.render('home/index', { title: 'shop home' });
+  res.render('home/index', { title: 'MEEN home -- index' });
 };

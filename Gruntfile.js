@@ -11,14 +11,15 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         watch: {
-            hbs: {
-                files: ['app/views/**'],
+            rebooted: {
+                files: ['.rebooted'],
+                //tasks: [''],
                 options: {
                     livereload: true,
                 },
             },
             js: {
-                files: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/scripts/**', 'test/**/*.js'],
+                files: ['public/scripts/**'],
                 //tasks: ['jshint'],
                 options: {
                     livereload: true,
@@ -31,40 +32,47 @@ module.exports = function(grunt) {
                 },
             },
             css: {
-                files: ['public/styles/**'],
+                files: ['public/styles/**/*.{scss,sass}'],
                 options: {
                     livereload: true
                 }
             },
             emberTemplates: {
                 files: 'public/templates/**/*.hbs',
-                tasks: ['emberTemplates']
-            },
-            livereload: {
+                tasks: ['emberTemplates'],
                 options: {
-                    livereload: LIVERELOAD_PORT
+                    livereload: true,
                 },
-                files: [
-                    'public/dist/scripts/*.js',
-                    'public/*.html',
-                    '{dist,public}/styles/{,*/}*.css',
-                    'public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-                ]
-            }
+            },
         },
         nodemon: {
             dev: {
+                script: 'bin/www',
                 options: {
-                    file: 'server.js',
-                    args: [],
-                    ignoredFiles: ['public/**'],
-                    watchedExtensions: ['js'],
+                    //args: [],
+                    ignore: ['node_modules/**', 'public/**'],
+                    ext: 'js,coffee,hbs',
                     debug: true,
-                    delayTime: 1,
+                    delay: 1,
                     env: {
                         PORT: 3000 // TODO
                     },
-                    cwd: __dirname
+                    cwd: __dirname,
+                    //nodeArgs: '',
+                    callback: function (nodemon) {
+                        nodemon.on('log', function (event) {
+                            console.log(event.colour);
+                        });
+
+                        // refreshes browser when server reboots
+                        nodemon.on('restart', function () {
+                            // Delay before server listens on port
+                            setTimeout(function() {
+                                require('fs').writeFileSync('.rebooted', 'rebooted' + Date.now());
+                            }, 500);
+                        });
+                    }
+
                 }
             }
         },
