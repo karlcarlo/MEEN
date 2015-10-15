@@ -21,7 +21,8 @@ _.extend(app.locals, {
   title: config.app.title,
   description: config.app.description,
   keywords: config.app.keywords,
-  messages: []
+  messages: [],
+  isDevelopment: process.env.NODE_ENV === 'development'
 });
 
 // handlebars
@@ -42,6 +43,15 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
 
+// livereload
+if(process.env.NODE_ENV === 'development'){
+  app.locals.isDevelopment = true;
+  app.use(function(req, res, next){
+    app.locals.hostname = req.hostname;
+    next();
+  });
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -51,7 +61,7 @@ app.use(sass({
   dest: path.join(__dirname, '../public'),
   debug: false,
   outputStyle: 'nested', // nested, expanded, compact, compressed
-  prefix:  ''  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+  prefix:  ''  // Where prefix is at <link rel="styles" href="prefix/style.css"/>
 }));
 app.use(express.static(path.join(__dirname, '../public')));
 

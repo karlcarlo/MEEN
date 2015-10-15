@@ -1,18 +1,17 @@
 'use strict';
+
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({
     port: LIVERELOAD_PORT
 });
-var mountFolder = function(connect, dir) {
-    return connect.static(require('path').resolve(dir));
-};
+
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     // Project Configuration
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         watch: {
-            jade: {
+            hbs: {
                 files: ['app/views/**'],
                 options: {
                     livereload: true,
@@ -20,7 +19,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/scripts/**', 'test/**/*.js'],
-                tasks: ['jshint'],
+                //tasks: ['jshint'],
                 options: {
                     livereload: true,
                 },
@@ -32,7 +31,7 @@ module.exports = function(grunt) {
                 },
             },
             css: {
-                files: ['public/css/**'],
+                files: ['public/styles/**'],
                 options: {
                     livereload: true
                 }
@@ -41,33 +40,17 @@ module.exports = function(grunt) {
                 files: 'public/templates/**/*.hbs',
                 tasks: ['emberTemplates']
             },
-            compass: {
-                files: ['public/stylesheets/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server']
-            },
             livereload: {
                 options: {
                     livereload: LIVERELOAD_PORT
                 },
                 files: [
-                    'public/.tmp/scripts/*.js',
+                    'public/dist/scripts/*.js',
                     'public/*.html',
-                    '{.tmp,public}/stylesheets/{,*/}*.css',
+                    '{dist,public}/styles/{,*/}*.css',
                     'public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
-        },
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
-            },
-            all: [
-                'gruntfile.js',
-                'public/scripts/{,*/}*.js',
-                '!public/lib/*',
-                'test/spec/{,*/}*.js'
-            ]
         },
         nodemon: {
             dev: {
@@ -79,7 +62,7 @@ module.exports = function(grunt) {
                     debug: true,
                     delayTime: 1,
                     env: {
-                        PORT: 3000
+                        PORT: 3000 // TODO
                     },
                     cwd: __dirname
                 }
@@ -95,122 +78,11 @@ module.exports = function(grunt) {
                 files: [{
                     dot: true,
                     src: [
-                        '.tmp',
-                        'dist/*',
-                        '!dist/.git*'
+                        'public/dist',
                     ]
                 }]
             },
-            server: '.tmp'
-        },
-        mochaTest: {
-            options: {
-                reporter: 'spec',
-                require: 'server.js'
-            },
-            src: ['test/mocha/**/*.js']
-        },
-        env: {
-            test: {
-                NODE_ENV: 'test'
-            }
-        },
-        compass: {
-            options: {
-                sassDir: 'public/stylesheets',
-                cssDir: 'public/.tmp/stylesheets',
-                generatedImagesDir: 'public/.tmp/images/generated',
-                imagesDir: 'public/images',
-                javascriptsDir: 'public/scripts',
-                fontsDir: 'public/stylesheets/fonts',
-                importPath: 'public/lib',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/stylesheets/fonts',
-                relativeAssets: false
-            },
-            dist: {},
-            server: {
-                options: {
-                    debugInfo: true
-                }
-            }
-        },
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        'dist/scripts/{,*/}*.js',
-                        'dist/stylesheets/{,*/}*.css',
-                        'dist/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
-                        'dist/stylesheets/fonts/*'
-                    ]
-                }
-            }
-        },
-        useminPrepare: {
-            html: '.tmp/index.html',
-            options: {
-                dest: 'dist'
-            }
-        },
-        usemin: {
-            html: ['dist/{,*/}*.html'],
-            css: ['dist/stylesheets/{,*/}*.css'],
-            options: {
-                dirs: ['dist']
-            }
-        },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'public/images',
-                    src: '{,*/}*.{png,jpg,jpeg}',
-                    dest: 'dist/images'
-                }]
-            }
-        },
-        svgmin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'public/images',
-                    src: '{,*/}*.svg',
-                    dest: 'dist/images'
-                }]
-            }
-        },
-        cssmin: {
-            dist: {
-                files: {
-                    'dist/styles/main.css': [
-                        '.tmp/stylesheets/{,*/}*.css',
-                        'public/stylesheets/{,*/}*.css'
-                    ]
-                }
-            }
-        },
-        htmlmin: {
-            dist: {
-                options: {
-                    /*removeCommentsFromCDATA: true,
-                    // https://github.com/yeoman/grunt-usemin/issues/44
-                    //collapseWhitespace: true,
-                    collapseBooleanAttributes: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true,
-                    removeEmptyAttributes: true,
-                    removeOptionalTags: true*/
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'public',
-                    src: '*.html',
-                    dest: 'dist'
-                }]
-            }
+            server: 'dist'
         },
         copy: {
             dist: {
@@ -223,13 +95,16 @@ module.exports = function(grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
-                        'stylesheets/fonts/*'
+                        'styles/fonts/*'
                     ]
                 }]
             }
         },
         emberTemplates: {
             options: {
+                templateCompilerPath: 'public/lib/ember/ember-template-compiler.js',
+                handlebarsPath: 'public/lib/handlebars/handlebars.js',
+                templateNamespace: 'HTMLBars',
                 templateName: function(sourceFile) {
                     var templatePath = 'public/templates/';
                     return sourceFile.replace(templatePath, '');
@@ -237,7 +112,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'public/.tmp/scripts/compiled-templates.js': 'public/templates/{,*/}*.hbs'
+                    'public/dist/scripts/compiled-templates.js': 'public/templates/{,*/}*.hbs'
                 }
             }
         },
@@ -245,7 +120,6 @@ module.exports = function(grunt) {
             tasks: [
                 'nodemon',
                 'emberTemplates',
-                'compass:server',
                 'watch'
             ],
             options: {
@@ -259,15 +133,15 @@ module.exports = function(grunt) {
                         return 'public/' + filepath;
                     }
                 },
-                src: 'public/scripts/app.js',
-                dest: 'public/.tmp/scripts/combined-scripts.js'
+                src: 'public/scripts/**/*.js',
+                dest: 'public/dist/scripts/combined-scripts.js'
             }
         }
     });
 
     grunt.registerTask('server', function(target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run(['build', 'open']);
         }
 
         grunt.option('force', true);
@@ -282,30 +156,18 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
-        // 'replace:app',
         'concurrent:test',
-        'connect:test',
         'neuter:app',
-        'mocha'
     ]);
 
     grunt.registerTask('build', [
         'clean:dist',
-        // 'replace:dist',
-        'useminPrepare',
-        'concurrent:dist',
         'neuter:app',
-        'concat',
-        'cssmin',
-        'uglify',
+        'emberTemplates',
         'copy',
-        'rev',
-        'usemin'
     ]);
 
     grunt.registerTask('default', [
-        'jshint',
-        'test',
         'build'
     ]);
 };

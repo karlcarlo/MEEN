@@ -50,7 +50,7 @@ node_modules/
 # SASS Files
 # --------------------
 .sass-cache/
-public/stylesheets/**/*.css
+public/styles/**/*.css
 
 # --------------------
 # Bower Files
@@ -65,3 +65,4 @@ public/lib/
 test/coverage/
 /public/build/
 
+public/dist
